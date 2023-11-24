@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="CSS/payment-style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="container__header">
+                <h1><i class="fa-solid fa-book-open-reader"></i> Beyond Books </h1>
+            </div>
+            <div class="container__body">
+                <h2>Thank you for your order!</h2>
+                <p> Hi Ayesha,</p>
+                <p>We have received your order #BDU-808-25252001590 and it is now being processed.</p>
+                <div class="container__list">
+                    <p id="orderDetails"></p>
+
+                    <!-- Payment page content -->
+
+                    <div id="receiptItems" class="table-container" role="table">
+                        <!-- Receipt items will be dynamically inserted here -->
+                    </div>
+                    <div class="flex-table row" role="rowgroup">
+                        <div class="flex-row first" role="cell">Total</div>
+                        <div class="flex-row" role="cell" id="totalAmount">$0.00</div>
+                    </div>
+                </div>
+
+                <div class="container__barcode">
+                    <p>Track your order</p>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZf4UVrvG5gug1icYjer-V09hsxxatJa1hFQ&usqp=CAU"
+                        alt="barcode" />
+                    <p>SH4538879444760733</p>
+                </div>
+                <div class="container__social">
+                    Follow us <br>
+                    <i class="fa-brands fa-facebook"></i> <i class="fa-brands fa-instagram"></i>
+                </div>
+                <div>
+                    <a href="cart.html"
+                        class="btn btn-lg btn-outline-danger d-flex justify-content-center mt-2">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch payment details from localStorage
+            const receiptItems = JSON.parse(localStorage.getItem('cart')) || [];
+            displayReceiptItems(receiptItems);
+
+            // Update order details with today's date
+            const orderDetailsElement = document.getElementById('orderDetails');
+            const today = new Date();
+            const formattedDate = `${today.toDateString()} ${today.toLocaleTimeString()}`;
+            orderDetailsElement.textContent = `Your order: #BDU-808-25252001590 (${formattedDate})`;
+        });
+
+        async function displayReceiptItems(receiptItems) {
+            const receiptItemsContainer = document.getElementById('receiptItems');
+            const totalAmountElement = document.getElementById('totalAmount');
+
+            // Clear previous content
+            receiptItemsContainer.innerHTML = '';
+
+            // Display each item in the receipt
+            for (const item of receiptItems) {
+                // Fetch book details (including image URL) from the JSON file
+                const bookDetails = await fetchBookDetails(item.title);
+
+                const row = document.createElement('div');
+                row.classList.add('flex-table', 'row');
+
+                row.innerHTML = `
+                <div class="flex-row" role="cell">
+                    <img src="${bookDetails.cover_image || 'path/to/default-image.jpg'}" alt="${item.title}" />
+                </div>
+                <div class="flex-row" role="cell">
+                    ${item.title} <br> <span>Quantity: ${item.quantity}</span>
+                </div>
+                <div class="flex-row" role="cell">$${(item.price * item.quantity).toFixed(2)}</div>
+            `;
+                receiptItemsContainer.appendChild(row);
+            }
+
+            // Calculate total amount
+            const totalAmount = receiptItems.reduce((total, item) => total + item.price * item.quantity, 0);
+            totalAmountElement.textContent = `$${totalAmount.toFixed(2)}`;
+        }
+
+        async function fetchBookDetails(title) {
+            // Fetch book details from the JSON file based on the title
+            const response = await fetch('books.json');
+            const books = await response.json();
+            return books.find(book => book.title === title);
+        }
+    </script>
+</body>
+
+</html>

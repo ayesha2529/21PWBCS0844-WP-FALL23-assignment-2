@@ -1,0 +1,143 @@
+/* Variables */
+:root {
+    --table-border: #9a8e8e;
+    --brand: #AE512A;
+  }
+  
+  /* Mixin */
+  /* No mixins in pure CSS, so this won't be included */
+  
+  /* General Styles */
+  html, body {
+    background-color: rgb(85, 18, 18);
+    height: 100vh;
+    width: 100%;
+    margin: 10px;
+    padding: 30px;
+    /* color: rgb(204, 180, 180); */
+    /* font-family: "VT323", monospace; */
+    color: black;
+  }
+  
+  .wrapper {
+    padding-bottom: 10px;
+  }
+  
+  /* body {
+    /* background-color: #261c1c; */
+  */
+  
+  div {
+    box-sizing: border-box;
+  }
+
+  .last-row {
+    grid-template-columns: repeat(auto-fill, 33.33%) 33.33%;
+}
+  
+  /* Container Styles */
+  .container {
+    background-color: rgb(225, 212, 212);
+    width: 600px;
+    margin: auto;
+    padding: 1em;
+    border-radius: 0.5em;
+  }
+  
+  .container__header {
+    padding: 0 0.5em;
+  }
+  
+  .container__header h1 {
+    font-family: sans-serif;
+    color: var(--brand);
+  }
+  
+  .container__body {
+    padding: 0 0.5em;
+  }
+  
+  .container__list {
+    margin-top: 1em;
+  }
+  
+  .container__list p {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .container__barcode {
+    margin: 1em 0;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .container__barcode p:last-of-type {
+    margin-top: -30px;
+    
+  }
+  
+  .container__social {
+    margin-top: 5px;
+    padding: 0.5em 0 0.5em;
+    text-align: center;
+    font-size: 20px;
+    color: var(--brand);
+  }
+  
+  .container__social i {
+    margin-top: 10px;
+    font-size: 2em;
+    margin-left: 10px;
+  }
+  
+  /* Table Styles */
+  .table-container {
+    display: block;
+    max-width: 600px;
+  }
+  
+  .flex-table {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 33.33%);
+    grid-template-rows: 100% auto;
+    border-bottom: 1px solid var(--table-border);
+    transition: 0.5s;
+  }
+  
+  .flex-table:last-of-type .first {
+    grid-column: span 2;
+    text-align: right;
+  }
+  
+  .flex-table .flex-row:last-of-type {
+    text-align: right;
+  }
+  
+  .flex-row {
+    display: block;
+    width: 100%;
+    text-align: left;
+    position: relative;
+    padding: 1em 1em;
+  }
+  
+  .flex-row img {
+    width: 100px;
+    padding-left: 10px;
+  }
+  
+  .flex-row span {
+    font-size: 20px;
+  }
+  
+  .flex-cell {
+    text-align: center;
+    padding: 0.5em 0.5em;
+    border-right: solid 1px var(--table-border);
+  }
+  /* Additional Style */
+
+
+  
